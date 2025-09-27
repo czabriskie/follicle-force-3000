@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Order Now - FOLLICLE FORCE 3000™{% endblock %}
+
+{% block content %}
+    <!-- Header Banner -->
+    <div class="banner">
+        <div class="flashing-text">🚨 ORDERING IN PROGRESS! 🚨</div>
+        <h1 class="main-title">FOLLICLE FORCE 3000™ ORDER FORM</h1>
+        <div class="subtitle">Your Hair Journey Begins NOW!</div>
+    </div>
+
+    <section class="order-form-section">
+        <div class="container">
+            <div class="order-content">
+                <div class="order-info">
+                    <h2>🎉 CONGRATULATIONS! 🎉</h2>
+                    <p>You're about to join thousands of satisfied customers who have transformed their lives with the FOLLICLE FORCE 3000™!</p>
+                    
+                    <div class="order-benefits">
+                        <h3>What You're Getting:</h3>
+                        <ul>
+                            <li>✅ FOLLICLE FORCE 3000™ Complete System</li>
+                            <li>✅ FREE Hair Comb for Giants</li>
+                            <li>✅ FREE "How to Braid Like a Viking" DVD</li>
+                            <li>✅ FREE Emergency Hair Tie (Industrial Strength)</li>
+                            <li>✅ 100% Money-Back Guarantee</li>
+                        </ul>
+                        
+                        <div class="price-highlight">
+                            <span class="old-price-small">$999.99</span>
+                            <span class="new-price-big">$19.99</span>
+                            <p>TODAY ONLY!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-form">
+                    <h2>📝 Customer Information</h2>
+                    <form method="POST" action="{{ url_for('order') }}">
+                        <div class="form-group">
+                            <label for="first_name">First Name *</label>
+                            <input type="text" id="first_name" name="first_name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="last_name">Last Name *</label>
+                            <input type="text" id="last_name" name="last_name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Street Address</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city">
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <select id="state" name="state">
+                                    <option value="">Select State</option>
+                                    <option value="AL">Alabama</option>
+                                    <option value="AK">Alaska</option>
+                                    <option value="AZ">Arizona</option>
+                                    <option value="AR">Arkansas</option>
+                                    <option value="CA">California</option>
+                                    <option value="CO">Colorado</option>
+                                    <option value="CT">Connecticut</option>
+                                    <option value="DE">Delaware</option>
+                                    <option value="FL">Florida</option>
+                                    <option value="GA">Georgia</option>
+                                    <option value="HI">Hawaii</option>
+                                    <option value="ID">Idaho</option>
+                                    <option value="IL">Illinois</option>
+                                    <option value="IN">Indiana</option>
+                                    <option value="IA">Iowa</option>
+                                    <option value="KS">Kansas</option>
+                                    <option value="KY">Kentucky</option>
+                                    <option value="LA">Louisiana</option>
+                                    <option value="ME">Maine</option>
+                                    <option value="MD">Maryland</option>
+                                    <option value="MA">Massachusetts</option>
+                                    <option value="MI">Michigan</option>
+                                    <option value="MN">Minnesota</option>
+                                    <option value="MS">Mississippi</option>
+                                    <option value="MO">Missouri</option>
+                                    <option value="MT">Montana</option>
+                                    <option value="NE">Nebraska</option>
+                                    <option value="NV">Nevada</option>
+                                    <option value="NH">New Hampshire</option>
+                                    <option value="NJ">New Jersey</option>
+                                    <option value="NM">New Mexico</option>
+                                    <option value="NY">New York</option>
+                                    <option value="NC">North Carolina</option>
+                                    <option value="ND">North Dakota</option>
+                                    <option value="OH">Ohio</option>
+                                    <option value="OK">Oklahoma</option>
+                                    <option value="OR">Oregon</option>
+                                    <option value="PA">Pennsylvania</option>
+                                    <option value="RI">Rhode Island</option>
+                                    <option value="SC">South Carolina</option>
+                                    <option value="SD">South Dakota</option>
+                                    <option value="TN">Tennessee</option>
+                                    <option value="TX">Texas</option>
+                                    <option value="UT">Utah</option>
+                                    <option value="VT">Vermont</option>
+                                    <option value="VA">Virginia</option>
+                                    <option value="WA">Washington</option>
+                                    <option value="WV">West Virginia</option>
+                                    <option value="WI">Wisconsin</option>
+                                    <option value="WY">Wyoming</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip_code">ZIP Code</label>
+                                <input type="text" id="zip_code" name="zip_code" pattern="[0-9]{5}(-[0-9]{4})?">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hair_type">Current Hair Type</label>
+                            <select id="hair_type" name="hair_type">
+                                <option value="">Select Hair Type</option>
+                                <option value="straight">Straight (What little I have)</option>
+                                <option value="wavy">Wavy (Barely visible waves)</option>
+                                <option value="curly">Curly (The few strands that remain)</option>
+                                <option value="coily">Coily (Wishful thinking)</option>
+                                <option value="none">What hair? 😭</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="baldness_level">Baldness Level</label>
+                            <select id="baldness_level" name="baldness_level">
+                                <option value="">Select Level</option>
+                                <option value="slight">Slight Thinning (Still in denial)</option>
+                                <option value="moderate">Moderate Baldness (Acceptance stage)</option>
+                                <option value="severe">Severe Baldness (Embracing the dome)</option>
+                                <option value="complete">Complete Baldness (Chrome dome status)</option>
+                                <option value="reverse">Negative Hair (Hair is growing inward)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="order-submit-button">
+                                🚀 PLACE MY ORDER NOW! 🚀
+                            </button>
+                            <p class="required-note">* Required fields</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Urgency Section -->
+    <section class="urgency-bottom">
+        <div class="container">
+            <div class="urgency-content">
+                <h3>⏰ HURRY! This offer expires in:</h3>
+                <div class="fake-timer">
+                    <span class="timer-part">23</span>:
+                    <span class="timer-part">59</span>:
+                    <span class="timer-part countdown">47</span>
+                </div>
+                <p>Don't let this life-changing opportunity slip away!</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

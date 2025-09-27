@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Customer Database - FOLLICLE FORCE 3000™{% endblock %}
+
+{% block content %}
+    <div class="banner">
+        <div class="flashing-text">📊 CUSTOMER DASHBOARD 📊</div>
+        <h1 class="main-title">FOLLICLE FORCE 3000™ CUSTOMERS</h1>
+        <div class="subtitle">Our Growing Family of Hair Heroes!</div>
+    </div>
+
+    <section class="customers-section">
+        <div class="container">
+            <div class="customers-header">
+                <h2>🎉 Look at All These Happy Future Hair Heroes! 🎉</h2>
+                <p>These brave souls have taken the first step towards magnificent hair!</p>
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-number">{{ customers|length }}</span>
+                        <span class="stat-label">Total Customers</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">{{ customers|length * 1000 }}%</span>
+                        <span class="stat-label">Hair Growth Expected</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">∞</span>
+                        <span class="stat-label">Confidence Boost</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if customers %}
+                <div class="customers-table-container">
+                    <table class="customers-table">
+                        <thead>
+                            <tr>
+                                <th>👤 Customer</th>
+                                <th>📧 Email</th>
+                                <th>📞 Phone</th>
+                                <th>📍 Location</th>
+                                <th>💇‍♂️ Hair Info</th>
+                                <th>📅 Order Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for customer in customers %}
+                                <tr class="customer-row">
+                                    <td class="customer-name">
+                                        <strong>{{ customer.first_name }} {{ customer.last_name }}</strong>
+                                    </td>
+                                    <td>{{ customer.email }}</td>
+                                    <td>{{ customer.phone or 'Not provided' }}</td>
+                                    <td>
+                                        {% if customer.city and customer.state %}
+                                            {{ customer.city }}, {{ customer.state }}
+                                            {% if customer.zip_code %}
+                                                {{ customer.zip_code }}
+                                            {% endif %}
+                                        {% else %}
+                                            Location not provided
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if customer.hair_type or customer.baldness_level %}
+                                            <div class="hair-info">
+                                                {% if customer.hair_type %}
+                                                    <div>Type: {{ customer.hair_type|title }}</div>
+                                                {% endif %}
+                                                {% if customer.baldness_level %}
+                                                    <div>Level: {{ customer.baldness_level|title }}</div>
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            Not specified
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ customer.created_at.split('.')[0] if '.' in customer.created_at else customer.created_at }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="no-customers">
+                    <div class="no-customers-emoji">😢</div>
+                    <h3>No customers yet!</h3>
+                    <p>But don't worry - soon this list will be FULL of hair heroes!</p>
+                    <a href="{{ url_for('index') }}" class="cta-button">Get Your First Customer!</a>
+                </div>
+            {% endif %}
+
+            <div class="customers-actions">
+                <div class="action-buttons">
+                    <a href="{{ url_for('api_customers') }}" class="api-button" target="_blank">📊 View JSON API</a>
+                    <button onclick="location.reload()" class="refresh-button">🔄 Refresh Data</button>
+                    <a href="{{ url_for('index') }}" class="home-button">🏠 Back to Home</a>
+                </div>
+            </div>
+
+            <div class="customer-insights">
+                <h3>📈 Customer Insights</h3>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <h4>Most Common Hair Type</h4>
+                        <p class="insight-value">😭 "What hair?"</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Average Baldness Level</h4>
+                        <p class="insight-value">🔥 EXTREME</p>
+                    </div>
+                    <div class="insight-card">
+                        <h4>Success Rate</h4>
+                        <p class="insight-value">💯 100%*</p>
+                        <p class="insight-disclaimer">*Results not guaranteed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

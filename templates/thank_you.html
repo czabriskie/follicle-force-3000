@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Thank You! - FOLLICLE FORCE 3000™{% endblock %}
+
+{% block content %}
+    <div class="banner success-banner">
+        <div class="flashing-text">🎉 ORDER CONFIRMED! 🎉</div>
+        <h1 class="main-title">CONGRATULATIONS!</h1>
+        <div class="subtitle">Your FOLLICLE FORCE 3000™ is on the way!</div>
+    </div>
+
+    <section class="thank-you-section">
+        <div class="container">
+            <div class="thank-you-content">
+                <div class="celebration">
+                    <div class="hair-explosion">💇‍♂️💇‍♀️✨🦁✨💇‍♂️💇‍♀️</div>
+                    <h2>YOUR HAIR JOURNEY BEGINS NOW!</h2>
+                    <p class="big-text">Get ready for the most magnificent mane of your life!</p>
+                </div>
+
+                <div class="what-happens-next">
+                    <h3>What happens next:</h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Processing</h4>
+                                <p>Our hair scientists are carefully preparing your FOLLICLE FORCE 3000™ package</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Shipping</h4>
+                                <p>Your package will be delivered by our fleet of hair-covered delivery trucks</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Transformation</h4>
+                                <p>Apply the formula and watch your follicles come back to life!</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>New You</h4>
+                                <p>Enjoy your magnificent new hair and all the attention it brings!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bonus-section">
+                    <h3>Don't forget your FREE bonuses!</h3>
+                    <div class="bonuses-list">
+                        <div class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <span>Hair Comb for Giants (Industrial Size)</span>
+                        </div>
+                        <div class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <span>"How to Braid Like a Viking" DVD (Worth $49.99)</span>
+                        </div>
+                        <div class="bonus-item">
+                            <span class="bonus-icon">🎁</span>
+                            <span>Emergency Hair Tie (Tested on Gorillas)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guarantee-reminder">
+                    <h3>💯 Remember: 100% Money-Back Guarantee!</h3>
+                    <p>If you're not completely satisfied with your new magnificent mane, we'll give you your baldness back - FREE!</p>
+                </div>
+
+                <div class="social-sharing">
+                    <h3>Share your excitement!</h3>
+                    <p>Tell your friends about your upcoming hair transformation:</p>
+                    <div class="share-buttons">
+                        <button class="share-btn facebook" onclick="shareOnSocial('facebook')">📘 Share on Facebook</button>
+                        <button class="share-btn twitter" onclick="shareOnSocial('twitter')">🐦 Share on Twitter</button>
+                        <button class="share-btn instagram" onclick="shareOnSocial('instagram')">📷 Share on Instagram</button>
+                    </div>
+                </div>
+
+                <div class="back-home">
+                    <a href="{{ url_for('index') }}" class="back-button">← Back to Homepage</a>
+                    <p>Want to see all our happy customers? <a href="{{ url_for('customers') }}">View Customer List</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-message">
+        <div class="container">
+            <div class="final-content">
+                <h2>🦁 GET READY TO ROAR! 🦁</h2>
+                <p>Your baldness days are NUMBERED!</p>
+                <div class="countdown-to-hair">
+                    <p>Hair growth begins in: <span class="hair-countdown">72 hours</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
