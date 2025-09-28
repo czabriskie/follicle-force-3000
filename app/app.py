@@ -150,6 +150,26 @@ def health_check():
     """Health check endpoint for load balancer"""
     return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
 
+@app.route('/stress')
+def cpu_stress():
+    """CPU stress endpoint for testing autoscaling"""
+    import hashlib
+    import random
+    
+    # Do CPU-intensive work
+    result = 0
+    for i in range(50000):  # Increased iterations for more CPU load
+        data = str(random.random() * 1000000 + i).encode()
+        hash_result = hashlib.sha256(data).hexdigest()
+        result += len(hash_result)
+    
+    return jsonify({
+        'status': 'stress_complete', 
+        'iterations': 50000,
+        'result_length': result,
+        'timestamp': datetime.now().isoformat()
+    })
+
 if __name__ == '__main__':
     # Initialize database
     init_db()

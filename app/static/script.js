@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add click sound effects to buttons
     const orderButton = document.querySelector('.order-button');
     if (orderButton) {
-        orderButton.addEventListener('click', function() {
-            // Create a silly alert
-            alert('🎉 CONGRATULATIONS! 🎉\n\nYour order has been placed!\n\nYour hair will start growing in 3... 2... 1...\n\n*Hair growth not actually guaranteed*');
+        orderButton.addEventListener('click', function(e) {
+            // Show alert that we're taking them to order form
+            alert('🚀 TAKING YOU TO THE ORDER FORM! 🚀\n\nGet ready to transform your life!\n\nClick OK to continue to checkout!');
+            // Let the default link behavior continue after alert
         });
 
         // Add more dramatic effects on hover
