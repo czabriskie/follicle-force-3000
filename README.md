@@ -32,64 +32,134 @@ A satirical infomercial website parody showcasing over-the-top marketing tactics
 
 ## 🛠️ Technical Stack
 
-- **HTML5** - Semantic structure with proper accessibility
-- **CSS3** - Advanced animations, gradients, and responsive design
-- **Vanilla JavaScript** - Interactive elements and dynamic content
-- **Google Fonts** - Impact and Arial Black for that authentic infomercial look
+- **Flask** - Python web framework serving dynamic HTML via Jinja2 templates
+- **Gunicorn** - WSGI server running the Flask app in production
+- **NGINX** - Reverse proxy, static file serving, and gzip compression
+- **SQLite** - Lightweight database for customer order storage
+- **Packer** - Automates AMI creation for EC2 deployment
+- **HTML5 / CSS3 / JavaScript** - Frontend with animations and interactive elements
 
-## 🚀 Getting Started
+## 🚀 Running Locally
 
 ### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- No additional software or dependencies required
+- Python 3.8+
+- `pip`
 
-### Running the Project
-1. Clone or download the project files
-2. Open `index.html` in your web browser
-3. Enjoy the satirical experience!
+### Setup
 
 ```bash
-# If using a local server (optional)
-python -m http.server 8000
-# Then visit http://localhost:8000
+# Clone the repo
+git clone https://github.com/czabriskie/follicle-force-3000.git
+cd follicle-force-3000
+
+# Create and activate a virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r app/requirements.txt
+
+# Run the Flask development server
+python app/app.py
 ```
 
-## 📁 File Structure
+Visit **http://localhost:5000** in your browser.
+
+> The SQLite database (`customers.db`) is created automatically on first run.
+
+---
+
+## 🚢 Deploying to EC2
+
+Deployment uses a Packer-built AMI that pre-installs all dependencies. The app runs under **Gunicorn** behind **NGINX** and is managed by **systemd**.
+
+### Step 1 — Build the AMI with Packer
+
+Fill in your AWS credentials in `build/packer-vars.json`, then run:
+
+```bash
+cd build
+./build.sh
+```
+
+This produces an AMI ID you'll use in your EC2 Launch Template.
+
+### Step 2 — Launch an EC2 Instance
+
+1. In the AWS Console, create a **Launch Template** using the AMI built above.
+2. Use instance type `t3.micro` (or as configured in `packer-vars.json`).
+3. Attach a security group that allows inbound **HTTP (port 80)** and **SSH (port 22)**.
+4. Launch the instance.
+
+### Step 3 — Verify the App
+
+Once the instance is running, visit its **public IP** in a browser. NGINX listens on port 80 and proxies requests to Gunicorn on port 5000.
+
+You can also SSH in to check service status:
+
+```bash
+ssh -i your-key.pem ubuntu@<ec2-public-ip>
+
+sudo systemctl status follicle-force   # Gunicorn/Flask app
+sudo systemctl status nginx            # NGINX reverse proxy
+```
+
+---
+
+## 📁 Project Structure
 
 ```
 follicle-force-3000/
 │
-├── index.html          # Main HTML structure
-├── styles.css          # All styling and animations
-├── script.js           # Interactive JavaScript features
-└── README.md           # This documentation
+├── app/
+│   ├── app.py              # Flask application & routes
+│   ├── requirements.txt    # Python dependencies
+│   ├── static/             # CSS, JS, and other static assets
+│   └── templates/          # Jinja2 HTML templates
+│
+├── build/
+│   ├── build.sh            # Runs the Packer build
+│   ├── deploy.sh           # Sets up the app on a fresh EC2 instance
+│   ├── packer-template.json
+│   └── packer-vars.json    # AWS credentials & region (fill in before building)
+│
+├── deployment/
+│   ├── follicle-force.service      # systemd unit for Gunicorn
+│   └── nginx-follicle-force.conf   # NGINX reverse proxy config
+│
+└── testing/
+    ├── load_test.py                # Python load testing script
+    └── aggressive_stress_test.sh   # Shell stress test for autoscaling demos
 ```
 
 ## 🎯 Key Components
 
-### HTML Structure
-- **Banner Section**: Flashing alerts and main title
-- **Hero Section**: "Doctors hate him" claim with before/after
-- **Problem Section**: Relatable baldness problems with emojis
-- **Solution Section**: Product features and benefits
-- **Testimonials**: Fake customer reviews
-- **Science Section**: Pseudo-scientific "proof"
-- **Pricing**: Fake discounts and bonus items
-- **Call to Action**: Urgent purchase prompts
+### Flask Routes (`app/app.py`)
 
-### CSS Animations
-- `rainbowBackground`: Continuously shifting gradient
-- `flash`: Alternating opacity and color for urgency
-- `bounce`: Title animation for attention-grabbing
-- `shake`: Subtle movement for emphasis
-- `wobble`: Testimonial interaction feedback
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/` | GET | Main infomercial landing page |
+| `/order` | GET/POST | Order form; saves customer to SQLite |
+| `/thank-you` | GET | Order confirmation page |
+| `/customers` | GET | Admin view of all submitted orders |
+| `/api/customers` | GET | Same data as JSON |
+| `/health` | GET | Health check endpoint (used by Load Balancer) |
+| `/stress` | GET | CPU stress endpoint for autoscaling demos |
 
-### JavaScript Features
-- Random countdown timer updates
-- Button hover effects and transformations
-- Testimonial click interactions
-- Floating emoji generation
-- Order button alert system
+### NGINX (`deployment/nginx-follicle-force.conf`)
+- Listens on port 80
+- Serves `/static/` files directly (bypasses Gunicorn)
+- Proxies all other requests to Gunicorn on `127.0.0.1:5000`
+
+### systemd (`deployment/follicle-force.service`)
+- Keeps Gunicorn running as a background service
+- Auto-restarts on failure
+- Starts automatically on instance boot
+
+### Frontend (`app/static/`, `app/templates/`)
+- Jinja2 templates for server-rendered HTML
+- CSS animations: rainbow gradient, flashing banners, bouncing title
+- JS: countdown timer, floating emoji, order button interactions
 
 ## 🎨 Design Philosophy
 
