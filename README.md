@@ -33,8 +33,6 @@ A satirical infomercial website parody showcasing over-the-top marketing tactics
 ## 🛠️ Technical Stack
 
 - **Flask** - Python web framework serving dynamic HTML via Jinja2 templates
-- **Gunicorn** - WSGI server running the Flask app in production
-- **NGINX** - Reverse proxy, static file serving, and gzip compression
 - **SQLite** - Lightweight database for customer order storage
 - **Packer** - Automates AMI creation for EC2 deployment
 - **HTML5 / CSS3 / JavaScript** - Frontend with animations and interactive elements
@@ -71,14 +69,14 @@ Visit **http://localhost:5000** in your browser.
 
 ## 🚢 Deploying to EC2
 
-Deployment uses a Packer-built AMI that pre-installs all dependencies. The app runs under **Gunicorn** behind **NGINX** and is managed by **systemd**.
+Deployment uses a Packer-built AMI that pre-installs all dependencies. Flask runs directly on port 80 and is managed by **systemd**.
 
 ### Step 1 — Build the AMI with Packer
 
-Fill in your AWS credentials in `build/packer-vars.json`, then run:
+Fill in your AWS credentials in `infra/packer-vars.json`, then run:
 
 ```bash
-cd build
+cd infra
 ./build.sh
 ```
 
@@ -93,15 +91,14 @@ This produces an AMI ID you'll use in your EC2 Launch Template.
 
 ### Step 3 — Verify the App
 
-Once the instance is running, visit its **public IP** in a browser. NGINX listens on port 80 and proxies requests to Gunicorn on port 5000.
+Once the instance is running, visit its **public IP** in a browser. Flask listens directly on port 80.
 
 You can also SSH in to check service status:
 
 ```bash
 ssh -i your-key.pem ubuntu@<ec2-public-ip>
 
-sudo systemctl status follicle-force   # Gunicorn/Flask app
-sudo systemctl status nginx            # NGINX reverse proxy
+sudo systemctl status follicle-force   # Flask app
 ```
 
 ---
@@ -117,15 +114,12 @@ follicle-force-3000/
 │   ├── static/             # CSS, JS, and other static assets
 │   └── templates/          # Jinja2 HTML templates
 │
-├── build/
-│   ├── build.sh            # Runs the Packer build
-│   ├── deploy.sh           # Sets up the app on a fresh EC2 instance
-│   ├── packer-template.json
-│   └── packer-vars.json    # AWS credentials & region (fill in before building)
-│
-├── deployment/
-│   ├── follicle-force.service      # systemd unit for Gunicorn
-│   └── nginx-follicle-force.conf   # NGINX reverse proxy config
+├── infra/
+│   ├── build.sh                    # Runs the Packer build
+│   ├── packer-template.pkr.hcl    # Packer build definition
+│   ├── packer-vars.json           # AWS credentials & region (fill in before building)
+│   └── files/
+│       └── follicle-force.service # systemd unit for Flask
 │
 └── testing/
     ├── load_test.py                # Python load testing script
@@ -146,13 +140,8 @@ follicle-force-3000/
 | `/health` | GET | Health check endpoint (used by Load Balancer) |
 | `/stress` | GET | CPU stress endpoint for autoscaling demos |
 
-### NGINX (`deployment/nginx-follicle-force.conf`)
-- Listens on port 80
-- Serves `/static/` files directly (bypasses Gunicorn)
-- Proxies all other requests to Gunicorn on `127.0.0.1:5000`
-
-### systemd (`deployment/follicle-force.service`)
-- Keeps Gunicorn running as a background service
+### systemd (`infra/files/follicle-force.service`)
+- Runs Flask directly on port 80 as root
 - Auto-restarts on failure
 - Starts automatically on instance boot
 
