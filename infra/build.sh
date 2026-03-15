@@ -5,16 +5,16 @@ echo "🏗️  Building Follicle Force 3000 AMI"
 echo "====================================="
 
 # Change to build directory
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit 1
 
 # Verify required files exist
-if [[ ! -f "packer-template.json" ]]; then
-    echo "❌ Error: packer-template.json not found in build directory"
+if [[ ! -f "packer-template.pkr.hcl" ]]; then
+    echo "❌ Error: packer-template.pkr.hcl not found"
     exit 1
 fi
 
 if [[ ! -f "packer-vars.json" ]]; then
-    echo "❌ Error: packer-vars.json not found in build directory"
+    echo "❌ Error: packer-vars.json not found"
     exit 1
 fi
 
@@ -23,8 +23,8 @@ if [[ ! -d "../app" ]]; then
     exit 1
 fi
 
-if [[ ! -d "../deployment" ]]; then
-    echo "❌ Error: deployment directory not found"
+if [[ ! -d "files" ]]; then
+    echo "❌ Error: files directory not found"
     exit 1
 fi
 
@@ -34,12 +34,16 @@ echo "📦 App files:"
 ls -la ../app/
 
 echo ""
-echo "⚙️  Deployment configs:"
-ls -la ../deployment/
+echo "⚙️  Service files:"
+ls -la files/
+
+echo ""
+echo "🔌 Initializing Packer plugins..."
+packer init .
 
 echo ""
 echo "🚀 Starting Packer build..."
-packer build -var-file=packer-vars.json packer-template.json
+packer build -var-file=packer-vars.json .
 
 if [[ $? -eq 0 ]]; then
     echo ""

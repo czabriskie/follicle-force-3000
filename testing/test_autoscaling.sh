@@ -2,7 +2,7 @@
 # Quick autoscaling test script
 # This will generate enough load to trigger your autoscaling policies
 
-ALB_URL="http://follicle-force-1-1793883685.us-east-1.elb.amazonaws.com"
+ALB_URL="http://ff1-1-1054234112.us-east-1.elb.amazonaws.com"
 
 echo "🚀 Starting Follicle Force 3000 Autoscaling Test"
 echo "================================================"
@@ -21,7 +21,7 @@ echo "Starting load test in 3 seconds..."
 sleep 3
 
 # Run load test with aggressive settings to trigger autoscaling
-python3 load_test.py \
+python3 load_test.py "$ALB_URL" \
     --threads 50 \
     --duration 600 \
     --rps 15
