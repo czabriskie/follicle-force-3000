@@ -8,33 +8,11 @@ import time
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 
-def make_request(url, session):
-    """Make a single request to the Flask app"""
-    try:
-        response = session.get(url, timeout=10)
-        print(f"Status: {response.status_code}, Response time: {response.elapsed.total_seconds():.2f}s")
-        return response.status_code
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
 def make_cpu_intensive_request(url, session):
-    """Make a request that includes CPU-intensive operations"""
+    """Hit the /stress endpoint to generate CPU load on the EC2 instance"""
     try:
-        # First make the normal request
-        response = session.get(url, timeout=10)
-        
-        # Then do some CPU-intensive work to simulate a heavy workload
-        # This simulates what would happen if your Flask app was doing heavy processing
-        import hashlib
-        import random
-        
-        # Generate some CPU load
-        for _ in range(1000):
-            data = str(random.random() * 1000000).encode()
-            hashlib.sha256(data).hexdigest()
-        
-        print(f"Status: {response.status_code}, Response time: {response.elapsed.total_seconds():.2f}s [CPU-intensive]")
+        response = session.get(f"{url}/stress", timeout=30)
+        print(f"Status: {response.status_code}, Response time: {response.elapsed.total_seconds():.2f}s [/stress]")
         return response.status_code
     except Exception as e:
         print(f"Error: {e}")
@@ -77,7 +55,7 @@ def load_test(url, num_threads=10, duration=300, requests_per_second=5):
 
 if __name__ == "__main__":
     # Default ALB URL
-    DEFAULT_URL = "http://follicle-force-1-1793883685.us-east-1.elb.amazonaws.com"
+    DEFAULT_URL = "http://ff1-1-1054234112.us-east-1.elb.amazonaws.com"
     
     parser = argparse.ArgumentParser(description="Load test Flask app")
     parser.add_argument("url", nargs='?', default=DEFAULT_URL, help=f"ALB URL (default: {DEFAULT_URL})")
